@@ -1,0 +1,108 @@
+<?php
+  $this->layout()->breadcrumbs = false;
+  $this->layout()->bodyClass = trim(($this->layout()->bodyClass ?? '') . ' kdai-homepage');
+  $this->headTitle('Koha–DSpace AI Library');
+  $basePath = rtrim($this->basePath(), '/');
+  $homeAiEnabled = (string)($_GET['ai'] ?? '0') === '1';
+  $homeQuery = trim((string)($_GET['lookfor'] ?? ''));
+?>
+<main class="kdai-home" data-kdai-home data-base-path="<?=$this->escapeHtmlAttr($basePath)?>">
+  <header class="kdai-site-header">
+    <a class="kdai-brand" href="<?=$basePath?>/" aria-label="Koha–DSpace AI Library home">
+      <span class="kdai-brand-lockup" role="img" aria-label="Koha–DSpace AI Library">
+        <span class="kdai-brand-mark" aria-hidden="true"><i></i><i></i></span>
+        <span>Koha–DSpace <b>AI Library</b></span>
+      </span>
+    </a>
+    <button type="button" class="kdai-menu-toggle" data-kdai-menu-toggle aria-controls="kdai-home-nav" aria-expanded="false" aria-label="Open navigation menu">☰</button>
+    <nav id="kdai-home-nav" aria-label="Primary navigation">
+      <a class="active" href="<?=$basePath?>/">Home</a>
+      <a href="<?=$basePath?>/Search/Results?lookfor=%2A&amp;type=AllFields&amp;filter%5B%5D=collection%3A%22DSpace%22">Collections</a>
+      <a href="<?=$basePath?>/MyResearch/Home">My account</a>
+    </nav>
+    <button type="button" class="kdai-qr-button" aria-label="Show library QR code" title="QR code">
+      <img class="kdai-qr-button-image"
+           src="<?=$basePath?>/themes/kdai/images/library-qr.png"
+           alt=""
+           aria-hidden="true">
+    </button>
+    <a class="kdai-header-action" href="<?=$basePath?>/MyResearch/Home">Sign in</a>
+
+    <div class="kdai-qr-modal" data-kdai-qr-modal hidden>
+      <div class="kdai-qr-dialog" role="dialog" aria-modal="true" aria-labelledby="kdai-qr-title">
+        <button type="button" class="kdai-qr-close" data-kdai-qr-close aria-label="Close QR code">×</button>
+        <h2 id="kdai-qr-title">Open this library on your phone</h2>
+        <p>Scan the QR code with your phone camera.</p>
+        <img src="<?=$basePath?>/themes/kdai/images/library-qr.png" alt="QR code for the Koha–DSpace AI Library">
+        <button type="button" class="kdai-copy-link" data-kdai-copy-link>Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="kdai-hero" aria-label="Library search">
+    <div class="kdai-hero-inner">
+      <p class="kdai-subtitle">Search the library catalogue and open-access research repository together.</p>
+
+      <form class="kdai-main-search" method="get" action="<?=$basePath?>/Search/Results" role="search" data-kdai-main-search>
+        <label class="visually-hidden" for="kdai-lookfor-standard">Search books, authors, subjects and research</label>
+        <input id="kdai-lookfor-standard" name="lookfor" type="search" value="<?=$this->escapeHtmlAttr($homeQuery)?>" class="autocomplete searcher:Solr" data-autocomplete-display-limit="8" data-kdai-standard-query placeholder="Search books, authors, subjects, articles or research topics" autocomplete="off"<?=$homeAiEnabled ? ' hidden disabled' : ''?>>
+        <input id="kdai-lookfor-ai" name="lookfor" type="search" value="<?=$this->escapeHtmlAttr($homeQuery)?>" data-kdai-ai-query aria-label="Ask an evidence-grounded library question" placeholder="Ask a question using library evidence" autocomplete="off"<?=$homeAiEnabled ? '' : ' hidden disabled'?>>
+        <input type="hidden" name="type" value="AllFields">
+        <input type="hidden" name="ai" value="<?=$homeAiEnabled ? '1' : '0'?>" data-kdai-ai-value>
+        <input type="hidden" name="ai_provider" value="openai" data-kdai-provider-value>
+        <button type="submit" aria-label="Search"><span aria-hidden="true">⌕</span><span class="kdai-search-button-label"> Search</span></button>
+      </form>
+
+      <div class="kdai-search-options">
+        <div class="kdai-ai-option">
+          <label class="kdai-ai-switch">
+            <input type="checkbox" data-kdai-ai-toggle<?=$homeAiEnabled ? ' checked' : ''?>>
+            <span class="kdai-switch-track" aria-hidden="true"><span></span></span>
+            <span class="kdai-ai-label"><span aria-hidden="true">✦</span> AI answer</span>
+          </label>
+          <small id="kdai-ai-note">AI searches Koha and DSpace first, then answers only from verified library evidence.</small>
+
+          <div class="kdai-provider-preselect" data-kdai-provider-select<?=$homeAiEnabled ? '' : ' hidden'?>>
+            <span class="kdai-provider-label">Model</span>
+            <label>
+              <input type="radio" name="kdai-provider-choice" value="openai" checked>
+              GPT
+            </label>
+            <label>
+              <input type="radio" name="kdai-provider-choice" value="ollama">
+              Llama 3.1 8B
+            </label>
+          </div>
+        </div>
+        <a class="kdai-advanced-link" href="<?=$basePath?>/Search/Advanced">Advanced search <span aria-hidden="true">›</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="kdai-section kdai-pathways" aria-labelledby="kdai-pathways-title">
+    <h2 id="kdai-pathways-title" class="visually-hidden">Explore library resources</h2>
+    <a class="kdai-path-card" href="<?=$basePath?>/Search/Results?lookfor=%2A&amp;type=AllFields">
+      <span class="kdai-path-icon kdai-blue" aria-hidden="true">▤</span>
+      <span><strong>Library Catalogue</strong><b><span data-kdai-count="koha">200</span> books</b><small>Find print and electronic books, authors and subjects.</small></span>
+      <span class="kdai-arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="kdai-path-card" href="<?=$basePath?>/Search/Results?lookfor=%2A&amp;type=AllFields&amp;filter%5B%5D=collection%3A%22DSpace%22">
+      <span class="kdai-path-icon kdai-green" aria-hidden="true">▧</span>
+      <span><strong>Research Repository</strong><b><span data-kdai-count="dspace">20</span> open-access documents</b><small>Explore research papers and other scholarly work.</small></span>
+      <span class="kdai-arrow" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <section class="kdai-section kdai-featured" aria-labelledby="kdai-featured-title">
+    <div class="kdai-section-heading">
+      <div><h2 id="kdai-featured-title">Recently added</h2></div>
+      <a href="<?=$basePath?>/Search/Results?lookfor=%2A&amp;type=AllFields">View all resources <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="kdai-resource-grid" data-kdai-resources aria-live="polite" aria-busy="true">
+      <?php for ($i = 0; $i < 4; $i++): ?>
+        <article class="kdai-resource-card kdai-skeleton" aria-hidden="true"><div></div><span></span><span></span><span></span></article>
+      <?php endfor; ?>
+    </div>
+    <p class="kdai-api-note" data-kdai-status>Loading live catalogue and repository records…</p>
+  </section>
+</main>

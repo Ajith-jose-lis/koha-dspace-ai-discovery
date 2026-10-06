@@ -1,0 +1,73 @@
+<?php
+  $basePath = rtrim($this->basePath(), '/');
+  $headerQuery = trim((string)($_GET['lookfor'] ?? ''));
+  $headerType = (string)($_GET['type'] ?? 'AllFields');
+  $aiEnabled = (string)($_GET['ai'] ?? '0') === '1';
+  $searchTypes = [
+      'AllFields' => 'All Fields',
+      'Title' => 'Title',
+      'Author' => 'Author',
+      'Subject' => 'Subject',
+      'ISN' => 'ISBN / ISSN',
+      'CallNumber' => 'Call number',
+      'tag' => 'Tag',
+  ];
+  if (!isset($searchTypes[$headerType])) {
+      $headerType = 'AllFields';
+  }
+  $modeBase = $basePath . '/Search/Results?lookfor=' . rawurlencode($headerQuery)
+      . '&amp;type=' . rawurlencode($headerType);
+?>
+<div class="kdai-global-header hidden-print">
+  <div class="kdai-site-header kdai-internal-header">
+    <a class="kdai-brand" href="<?=$basePath?>/" aria-label="Koha–DSpace AI Library home">
+      <span class="kdai-brand-lockup" role="img" aria-label="Koha–DSpace AI Library">
+        <span class="kdai-brand-mark" aria-hidden="true"><i></i><i></i></span>
+        <span>Koha–DSpace <b>AI Library</b></span>
+      </span>
+    </a>
+    <button type="button" class="kdai-menu-toggle" data-kdai-menu-toggle aria-controls="kdai-global-nav" aria-expanded="false" aria-label="Open navigation menu">☰</button>
+    <nav id="kdai-global-nav" aria-label="Primary navigation">
+      <a href="<?=$basePath?>/">Home</a>
+      <a href="<?=$basePath?>/Search/Results?lookfor=%2A&amp;type=AllFields&amp;filter%5B%5D=collection%3A%22DSpace%22">Collections</a>
+      <a href="<?=$basePath?>/MyResearch/Home">My account</a>
+    </nav>
+    <a class="kdai-header-action" href="<?=$basePath?>/MyResearch/Home">Sign in</a>
+  </div>
+
+  <?php if ($this->layout()->searchbox !== false): ?>
+    <div class="kdai-compact-search container" role="search">
+      <form class="kdai-internal-search" method="get" action="<?=$basePath?>/Search/Results">
+        <div class="kdai-internal-query">
+          <label class="visually-hidden" for="kdai-internal-lookfor">Search the library</label>
+          <input
+            id="kdai-internal-lookfor"
+            name="lookfor"
+            type="search"
+            value="<?=$this->escapeHtmlAttr($headerQuery)?>"
+            placeholder="Search books, authors, subjects or research"
+            autocomplete="off"
+            <?php if (!$aiEnabled): ?>class="autocomplete searcher:Solr" data-autocomplete-display-limit="8"<?php endif; ?>
+          >
+          <button type="button" class="kdai-clear-search" data-kdai-clear-search aria-label="Clear search">×</button>
+        </div>
+        <label class="visually-hidden" for="kdai-internal-type">Search field</label>
+        <select id="kdai-internal-type" name="type">
+          <?php foreach ($searchTypes as $value => $label): ?>
+            <option value="<?=$this->escapeHtmlAttr($value)?>"<?=$value === $headerType ? ' selected' : ''?>><?=$this->escapeHtml($label)?></option>
+          <?php endforeach; ?>
+        </select>
+        <input type="hidden" name="ai" value="<?=$aiEnabled ? '1' : '0'?>">
+        <button type="submit" class="kdai-internal-submit"><span aria-hidden="true">⌕</span> Search</button>
+      </form>
+
+      <div class="kdai-compact-ai-option">
+        <a class="kdai-ai-switch-link<?=$aiEnabled ? ' is-on' : ''?>" role="switch" aria-checked="<?=$aiEnabled ? 'true' : 'false'?>" href="<?=$modeBase?>&amp;ai=<?=$aiEnabled ? '0' : '1'?>">
+          <span class="kdai-switch-track" aria-hidden="true"><span></span></span>
+          <span><span aria-hidden="true">✦</span> AI answer</span>
+        </a>
+        <small>Answers use verified Koha and DSpace evidence.</small>
+      </div>
+    </div>
+  <?php endif; ?>
+</div>

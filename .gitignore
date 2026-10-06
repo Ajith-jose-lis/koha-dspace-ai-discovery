@@ -1,0 +1,99 @@
+# Secrets and environment files
+.env
+.env.*
+*.env
+secrets/
+**/secrets/
+*secret*
+*credentials*
+*service-account*
+
+# Private keys and certificates
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Databases and research state
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Database dumps / backups
+*.sql.gz
+*.dump
+*.bak
+*.bak-*
+*.backup
+*before-*
+backups/
+backup/
+
+# Logs and runtime files
+*.log
+logs/
+*.pid
+*.sock
+
+# Python environments and caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+ai-venv/
+recordgen-venv/
+.pytest_cache/
+.mypy_cache/
+
+# Model / embedding caches
+.cache/
+huggingface/
+models/
+ollama/
+*.gguf
+*.safetensors
+
+# Qdrant runtime storage
+qdrant_storage/
+storage/
+
+# DSpace / Solr runtime data
+solr-data/
+dspace-data/
+assetstore/
+
+# Research datasets not yet licence-cleared
+data/raw/
+data/private/
+*.pdf
+
+# Generated SAF/import packages
+saf/
+saf-output/
+imports/
+exports/
+
+# Archives
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# Operating system / editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Allow the public example configuration only
+!config/example.env

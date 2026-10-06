@@ -1,0 +1,7 @@
+# VuFind AI reverse proxy example
+
+# Keep FastAPI bound to localhost and proxy only through Apache.
+# The AI timeout must be longer than the Ollama backend timeout.
+
+ProxyPass        "/kdai-ai/" "http://127.0.0.1:8011/" connectiontimeout=5 timeout=320
+ProxyPassReverse "/kdai-ai/" "http://127.0.0.1:8011/"

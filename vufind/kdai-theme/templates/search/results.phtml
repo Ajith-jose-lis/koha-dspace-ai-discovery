@@ -1,0 +1,156 @@
+<?php
+  $lookfor = $this->results->getUrlQuery()->isQuerySuppressed() ? '' : $this->params->getDisplayQuery();
+  $aiQuestion = trim((string)($_GET['ai_question'] ?? $lookfor));
+  $aiProvider = (string)($_GET['ai_provider'] ?? 'openai');
+  if (!in_array($aiProvider, ['openai', 'ollama'], true)) {
+      $aiProvider = 'openai';
+  }
+  $basePath = rtrim($this->basePath(), '/');
+  $headTitle = $this->slot('head-title')
+        ->get($this->translate('Search Results') . (empty($lookfor) ? '' : " - {$lookfor}"));
+  $this->headTitle($headTitle);
+
+  $this->layout()->searchbox = $this->context($this)->renderInContext(
+      'search/searchbox.phtml',
+      [
+        'lookfor' => $lookfor,
+        'searchIndex' => $this->params->getSearchHandler(),
+        'searchType' => $this->params->getSearchType(),
+        'searchId' => $this->results->getSearchId(),
+        'searchClassId' => $this->params->getSearchClassId(),
+        'checkboxFilters' => $this->params->getCheckboxFacets(),
+        'filterList' => $this->params->getFilterList(true),
+        'hasDefaultsApplied' => $this->params->hasDefaultsApplied(),
+        'selectedShards' => $this->params->getSelectedShards(),
+        'ignoreHiddenFiltersInRequest' => $this->ignoreHiddenFiltersInRequest ?? false,
+      ]
+  );
+  $this->breadcrumbs()->add($headTitle, active: true);
+  if (!$this->slot('search-controls')->isset()) {
+      $this->slot('search-controls')->set(
+          $this->render('search/controls/limit.phtml')
+          . ' ' . $this->render('search/controls/sort.phtml')
+          . ' ' . $this->render('search/controls/view.phtml')
+      );
+  }
+  $this->layout()->searchId = $this->results->getSearchId();
+  $options = $this->params->getOptions();
+  $this->render(
+      'search/results-scripts.phtml',
+      [
+          'displayVersions' => !empty($options->getVersionsAction()),
+          'listViewOption' => $options->getListViewOption(),
+          'jsResults' => $options->loadResultsWithJsEnabled(),
+      ]
+  );
+  $recommendations = $this->results->getRecommendations('side');
+  $recordTotal = $this->results->getResultTotal();
+  $this->assetManager()->appendScriptString('var multiFacetsSelection = "' . $this->multiFacetsSelection . '";');
+?>
+
+<h1 class="visually-hidden"><?=$this->escapeHtml($headTitle)?></h1>
+
+<section class="kdai-results-ai" aria-labelledby="kdai-results-ai-title"
+  data-kdai-ai-panel
+  data-query="<?=$this->escapeHtmlAttr($aiQuestion)?>"
+  data-base-path="<?=$this->escapeHtmlAttr($basePath)?>"
+  data-endpoint="/kdai-ai/answer">
+  <div class="kdai-results-ai-head">
+    <span class="kdai-ai-mark" aria-hidden="true">✦</span>
+    <div>
+      <p>AI DISCOVERY</p>
+      <h2 id="kdai-results-ai-title">Evidence-grounded answer</h2>
+    </div>
+    <span class="kdai-live-badge" data-kdai-ai-state>● LIVE</span>
+  </div>
+  <p class="kdai-results-question">
+    <?php if ($aiQuestion !== ''): ?>Question: <strong><?=$this->escapeHtml($aiQuestion)?></strong><?php else: ?>Explore the unified library collection.<?php endif; ?>
+  </p>
+
+  <div class="kdai-provider-display" aria-label="Selected AI model">
+    <span class="kdai-provider-label">Model:</span>
+    <strong>
+      <?=$aiProvider === 'ollama' ? 'Llama 3.1 8B · Local' : 'GPT · Hosted'?>
+    </strong>
+  </div>
+  <div class="kdai-results-ai-loading" data-kdai-ai-loading role="status">
+    <span class="kdai-ai-spinner" aria-hidden="true"></span>
+    <div><strong>Reading your library sources…</strong><small>Searching Koha records and DSpace full text for relevant evidence.</small></div>
+  </div>
+  <div class="kdai-ai-response" data-kdai-ai-response hidden>
+    <div class="kdai-results-ai-copy" data-kdai-ai-answer></div>
+    <div class="kdai-ai-actions">
+      <button type="button" data-kdai-toggle-sources aria-expanded="true">▤ Supporting evidence</button>
+      <button type="button" data-kdai-copy-answer>□ Copy answer</button>
+      <span data-kdai-model></span>
+    </div>
+    <div class="kdai-evidence-grid" data-kdai-sources aria-label="Supporting evidence"></div>
+    <p class="kdai-ai-caution">AI can make mistakes. Verify important information using the cited library sources.</p>
+  </div>
+  <div class="kdai-ai-error" data-kdai-ai-error hidden role="alert">
+    <strong>AI answer is temporarily unavailable.</strong>
+    <span>The standard VuFind results below are still available.</span>
+    <button type="button" data-kdai-ai-retry>Try again</button>
+  </div>
+</section>
+
+<div class="<?=$this->layoutClass('mainbody', (bool)$recommendations)?> kdai-results-main">
+  <?php if ($recordTotal > 0): ?>
+    <?php foreach ($this->results->getRecommendations('top') as $index => $current): ?>
+      <?=$this->recommend($current, 'top', $index)?>
+    <?php endforeach; ?>
+  <?php endif; ?>
+  <?=$this->flashmessages()?>
+  <div class="search-header hidden-print">
+    <div class="search-stats" data-record-total="<?=$this->escapeHtmlAttr($recordTotal)?>">
+      <?php if ($recordTotal > 0): ?>
+        <?php if ($this->results->getOptions()->getTopPaginatorStyle() === 'simple'): ?>
+          <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'Helpers/pagination-simple.phtml', ['params' => ['results' => $this->results]])?>
+        <?php else: ?>
+          <?=$this->context()->renderInContext('search/controls/showing.phtml', ['lookfor' => $lookfor, 'recordTotal' => $recordTotal])?>
+        <?php endif; ?>
+        <?php if ($recommendations): ?><?=$this->component('show-search-sidebar-button')?><?php endif; ?>
+      <?php else: ?>
+        <h2><?=$this->transEsc('nohit_heading')?></h2>
+      <?php endif; ?>
+    </div>
+    <?php if ($recordTotal > 0): ?><div class="search-controls"><?=$this->slot('search-controls')?></div><?php endif; ?>
+  </div>
+
+  <?php if ($options->showRestrictedViewWarning() && $this->results->isRestrictedView()): ?>
+    <?=$this->render('error/restrictedViewWarning.phtml')?>
+  <?php endif; ?>
+
+  <?php if ($recordTotal < 1): ?>
+    <p>
+      <?php
+        $default = $this->translate('nohit_lookfor_html', ['%%lookfor%%' => $this->escapeHtml($lookfor)]);
+        $emptyMessage = $this->slot('empty-message')->get($default);
+        $this->layout()->srmessage = $emptyMessage;
+        echo $emptyMessage;
+      ?>
+    </p>
+    <?php if (isset($this->parseError)): ?><p class="alert alert-danger"><?=$this->transEsc('nohit_parse_error')?></p><?php endif; ?>
+    <?php foreach (($top = $this->results->getRecommendations('top')) as $index => $current): ?><?=$this->recommend($current, 'top', $index)?><?php endforeach; ?>
+    <?php foreach ($this->results->getRecommendations('noresults') as $index => $current): ?>
+      <?php if (!in_array($current, $top)): ?><?=$this->recommend($current, 'noresults', $index)?><?php endif; ?>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <?php if ($this->results->getOptions()->getTopPaginatorStyle() === 'full'): ?>
+      <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'Helpers/pagination-top.phtml', ['params' => ['results' => $this->results], 'options' => $this->paginationOptions ?? []])?>
+    <?php endif; ?>
+    <form id="search-cart-form" method="post" name="bulkActionForm" action="<?=$this->url('cart-searchresultsbulk')?>" data-lightbox data-lightbox-onsubmit="bulkFormHandler">
+      <?=$this->context($this)->renderInContext('search/bulk-action-buttons.phtml', ['idPrefix' => ''])?>
+    </form>
+    <?=$this->render('search/results-list.phtml')?>
+    <?=$this->context($this)->renderInContext('search/bulk-action-buttons.phtml', ['isBottom' => true, 'formAttr' => 'search-cart-form'])?>
+    <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'Helpers/pagination.phtml', ['params' => ['results' => $this->results], 'options' => $this->paginationOptions ?? []])?>
+    <?=$this->context($this)->renderInContext('search/controls/results-tools.phtml', ['results' => $this->results])?>
+  <?php endif; ?>
+</div>
+
+<?php if ($recommendations): ?>
+  <div class="<?=$this->layoutClass('sidebar')?> kdai-results-sidebar" id="search-sidebar" role="region" aria-label="<?=$this->transEscAttr('Search sidebar')?>">
+    <?php foreach ($recommendations as $index => $current): ?><?=$this->recommend($current, 'side', $index)?><?php endforeach; ?>
+  </div>
+<?php endif; ?>

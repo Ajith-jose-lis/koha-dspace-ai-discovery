@@ -1,0 +1,19 @@
+<?php
+  $basePath = rtrim($this->basePath(), '/');
+  $year = date('Y');
+?>
+<footer class="kdai-footer hidden-print">
+  <div class="kdai-footer-inner">
+    <div class="kdai-footer-meta">
+      <strong>Koha–DSpace AI Library</strong>
+      <span>© <?=$this->escapeHtml($year)?> Evidence-grounded discovery prototype.</span>
+    </div>
+    <nav aria-label="Footer navigation">
+      <a href="<?=$basePath?>/Search/Results?lookfor=%2A&amp;type=AllFields">What's new</a>
+      <a href="<?=$basePath?>/Search/Advanced">Advanced search</a>
+      <a href="<?=$basePath?>/Browse/Home">Browse</a>
+      <a href="<?=$basePath?>/MyResearch/Home">My account</a>
+    </nav>
+    <div class="kdai-footer-platform">Powered by open-source Koha, DSpace and VuFind.</div>
+  </div>
+</footer>
