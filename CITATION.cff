@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software or research prototype, please cite it using the metadata below."
+title: "Koha–DSpace Evidence-Grounded AI Discovery"
+type: software
+authors:
+  - family-names: "Jose"
+    given-names: "Ajith"
+repository-code: "https://github.com/Ajith-jose-lis/koha-dspace-ai-discovery"
+license: "GPL-2.0-only"
+abstract: "An open-source research prototype integrating Koha, DSpace, VuFind/Solr, Qdrant and FastAPI for evidence-grounded conversational library discovery."
