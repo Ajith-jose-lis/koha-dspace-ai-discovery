@@ -2,6 +2,16 @@
 
 An open-source research prototype combining Koha, DSpace, VuFind/Solr, Qdrant and FastAPI for evidence-grounded conversational library discovery.
 
+## Article and Preprint
+
+[**Evidence Grounded AI Discovery for Libraries: Design and Formative Validation of a Koha DSpace VuFind and Qdrant Prototype**](https://doi.org/10.5281/zenodo.23532168)
+
+Ajith Jose. Version 1.1, 21 October 2026. Zenodo. **Preprint — not peer reviewed.**
+
+The article documents the prototype architecture, implementation, preliminary mixed-source retrieval checks, limitations and a protocol for future GPT–Llama evaluation. It does not report a completed comparative model study.
+
+**DOI:** [10.5281/zenodo.23532168](https://doi.org/10.5281/zenodo.23532168) · [Read or download the PDF on Zenodo](https://zenodo.org/records/23532168)
+
 ## Project Goal
 
 The prototype investigates whether AI-generated library discovery answers can remain grounded in validated evidence from connected Koha and DSpace collections.
