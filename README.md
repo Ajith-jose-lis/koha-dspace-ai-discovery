@@ -6,11 +6,17 @@ An open-source research prototype combining Koha, DSpace, VuFind/Solr, Qdrant an
 
 [**Building Evidence Grounded AI Discovery with Koha DSpace and VuFind**](docs/preprints/Koha_DSpace_AI_Discovery_Preprint_2026-10-30.pdf)
 
-Ajith Jose. 30 October 2026. **Preprint — not peer reviewed.**
+Ajith Jose. Zenodo version **v2**, 30 October 2026. **Preprint — not peer reviewed.**
+
+**DOI:** [10.5281/zenodo.23787930](https://doi.org/10.5281/zenodo.23787930) · [Public Zenodo record and PDF](https://zenodo.org/records/23787930)
+
+The PDF's internal manuscript label is **Revision 0.7**; this is distinct from the Zenodo release label **v2**.
 
 This implementation case study documents the connected discovery prototype and one illustrative paired GPT–Llama pilot using the same saved evidence. Checks on 29 October recorded 200 Koha bibliographic records, 20 archived DSpace items with 20 linked PDFs, 220 VuFind records and 817 Qdrant points. The pilot and retrospective, open-label author assessment identify practical issues with citation format and source classification; they do not establish general comparative model performance.
 
-The manuscript includes its limitations, AI assistance disclosure and provenance checks. The DOI below identifies the earlier preprint, not this case-study PDF.
+The manuscript includes its limitations, AI assistance disclosure and provenance checks. Zenodo publishes this case study as a revised version of the earlier project preprint in the same version history, with its own version-specific DOI. The DOI `10.5281/zenodo.23532168` identifies the earlier version 1.1, not this case-study PDF.
+
+The publicly deposited PDF matches the GitHub PDF added in commit `2c76b3f91dd687c669e8eb052ac0a60d7868fdb3` (MD5: `ab2e113f7ffa8acfc6a56ac71bbbddf9`). The private pilot archives and completed author review are not deposited with the manuscript.
 
 ## Earlier project preprint
 
@@ -21,6 +27,15 @@ Ajith Jose. Version 1.1, 21 October 2026. Zenodo. **Preprint — not peer review
 The article documents the prototype architecture, implementation, preliminary mixed-source retrieval checks, limitations and a protocol for future GPT–Llama evaluation. It does not report a completed comparative model study.
 
 **DOI:** [10.5281/zenodo.23532168](https://doi.org/10.5281/zenodo.23532168) · [Read or download the PDF on Zenodo](https://zenodo.org/records/23532168)
+
+## Citing the preprints
+
+Cite the version you actually consulted:
+
+- Jose, A. (2026). *Building Evidence Grounded AI Discovery with Koha DSpace and VuFind: An implementation case study with an illustrative paired pilot* (v2) [Preprint; not peer reviewed]. Zenodo. https://doi.org/10.5281/zenodo.23787930
+- Jose, A. (2026). *Evidence Grounded AI Discovery for Libraries: Design and Formative Validation of a Koha DSpace VuFind and Qdrant Prototype* (Version 1.1) [Preprint; not peer reviewed]. Zenodo. https://doi.org/10.5281/zenodo.23532168
+
+These are version-specific manuscript DOIs, not a DOI for a software release. The later manuscript extends the same prototype study with the 29 October count checks, a saved-evidence paired pilot, source verification and a retrospective open-label author assessment. Neither version establishes general comparative model performance.
 
 ## Project Goal
 
