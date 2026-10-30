@@ -2,7 +2,17 @@
 
 An open-source research prototype combining Koha, DSpace, VuFind/Solr, Qdrant and FastAPI for evidence-grounded conversational library discovery.
 
-## Article and Preprint
+## Latest case-study preprint
+
+[**Building Evidence Grounded AI Discovery with Koha DSpace and VuFind**](docs/preprints/Koha_DSpace_AI_Discovery_Preprint_2026-10-30.pdf)
+
+Ajith Jose. 30 October 2026. **Preprint — not peer reviewed.**
+
+This implementation case study documents the connected discovery prototype and one illustrative paired GPT–Llama pilot using the same saved evidence. Checks on 29 October recorded 200 Koha bibliographic records, 20 archived DSpace items with 20 linked PDFs, 220 VuFind records and 817 Qdrant points. The pilot and retrospective, open-label author assessment identify practical issues with citation format and source classification; they do not establish general comparative model performance.
+
+The manuscript includes its limitations, AI assistance disclosure and provenance checks. The DOI below identifies the earlier preprint, not this case-study PDF.
+
+## Earlier project preprint
 
 [**Evidence Grounded AI Discovery for Libraries: Design and Formative Validation of a Koha DSpace VuFind and Qdrant Prototype**](https://doi.org/10.5281/zenodo.23532168)
 
