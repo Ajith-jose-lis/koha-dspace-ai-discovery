@@ -8,3 +8,30 @@ authors:
 repository-code: "https://github.com/Ajith-jose-lis/koha-dspace-ai-discovery"
 license: "GPL-2.0-only"
 abstract: "An open-source research prototype integrating Koha, DSpace, VuFind/Solr, Qdrant and FastAPI for evidence-grounded conversational library discovery."
+references:
+  - type: unpublished
+    title: "Building Evidence Grounded AI Discovery with Koha DSpace and VuFind"
+    authors:
+      - family-names: "Jose"
+        given-names: "Ajith"
+        orcid: "https://orcid.org/0000-0003-0791-617X"
+    doi: "10.5281/zenodo.23787930"
+    url: "https://zenodo.org/records/23787930"
+    version: "v2"
+    date-released: "2026-10-30"
+    publisher:
+      name: "Zenodo"
+    notes: "Preprint; not peer reviewed. Subtitle: An implementation case study with an illustrative paired pilot. PDF internal label: Revision 0.7. Revised version of the earlier project preprint; one paired pilot and retrospective open-label author assessment do not establish general comparative model performance."
+  - type: unpublished
+    title: "Evidence Grounded AI Discovery for Libraries: Design and Formative Validation of a Koha DSpace VuFind and Qdrant Prototype"
+    authors:
+      - family-names: "Jose"
+        given-names: "Ajith"
+        orcid: "https://orcid.org/0000-0003-0791-617X"
+    doi: "10.5281/zenodo.23532168"
+    url: "https://zenodo.org/records/23532168"
+    version: "1.1"
+    date-released: "2026-10-21"
+    publisher:
+      name: "Zenodo"
+    notes: "Preprint; not peer reviewed. Earlier version in the same Zenodo version history. Reports architecture, a retrieval checkpoint and a protocol for future evaluation; no completed comparative model study."
